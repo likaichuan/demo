@@ -15,10 +15,10 @@ public class DemoController {
     @RequestMapping("/index")
     public String simple1() {
         Person person = new Person();
-//        person.setpAge(18);
-//        person.setpIdNum("23010319950804571x");
-//        person.setpName("李凯");
-        person = personMapper.selectByPrimaryKey(1);
-        return person.toString();
+        person.setpAge(18);
+        person.setpIdNum("23010319950804571x");
+        person.setpName("李凯");
+        personMapper.insertSelective(person);
+        return "nihao";
     }
 }
