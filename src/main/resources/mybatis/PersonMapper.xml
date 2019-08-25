@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mapper.PersonMapper" >
+  <resultMap id="BaseResultMap" type="com.demo.entity.Person" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_age" property="pAge" jdbcType="INTEGER" />
+    <result column="p_id_num" property="pIdNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, p_name, p_age, p_id_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from person
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from person
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.Person" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into person (p_name, p_age, p_id_num
+      )
+    values (#{pName,jdbcType=VARCHAR}, #{pAge,jdbcType=INTEGER}, #{pIdNum,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.Person" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pName != null" >
+        p_name,
+      </if>
+      <if test="pAge != null" >
+        p_age,
+      </if>
+      <if test="pIdNum != null" >
+        p_id_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pName != null" >
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pAge != null" >
+        #{pAge,jdbcType=INTEGER},
+      </if>
+      <if test="pIdNum != null" >
+        #{pIdNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.Person" >
+    update person
+    <set >
+      <if test="pName != null" >
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pAge != null" >
+        p_age = #{pAge,jdbcType=INTEGER},
+      </if>
+      <if test="pIdNum != null" >
+        p_id_num = #{pIdNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.Person" >
+    update person
+    set p_name = #{pName,jdbcType=VARCHAR},
+      p_age = #{pAge,jdbcType=INTEGER},
+      p_id_num = #{pIdNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
